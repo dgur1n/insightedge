@@ -1,5 +1,7 @@
 package org.gigaspaces.insightedge.cli.prototype
 
+import java.lang.reflect.Parameter
+
 import org.dmg.pmml.ComparisonMeasure
 import org.gigaspaces.insightedge.cli.grid
 
@@ -9,7 +11,9 @@ import org.gigaspaces.insightedge.cli.grid
 object metadataGenerator {
 
   def commandMetadata(module: Any, command: String): CommandMetadata = {
-    val method = module.getClass.getMethod(command, classOf[String])
+    val method = module.getClass.getMethods//(command, classOf[String])
+        .find(_.getName == command)
+        .get
 
     val methodHelp = method.getAnnotations
       .find(_.isInstanceOf[Command])
@@ -18,11 +22,18 @@ object metadataGenerator {
       .get
 
     val args = method.getParameters
-      .map(_.getAnnotation(classOf[Arg]))
-      .map(annotation => ArgumentMetadata(annotation.name(), annotation.help()))
+      .map(toArgumentMetadata)
       .toList
 
     CommandMetadata(command, methodHelp, args)
+  }
+
+  private def toArgumentMetadata(param: Parameter): ArgumentMetadata = {
+    val required = param.getType != classOf[Option[Any]]
+    val argAnnotation = Option(param.getAnnotation(classOf[Arg]))
+      .getOrElse(throw new RuntimeException(s"Parameter ${param.getName} should have @${classOf[Arg]} annotation"))
+
+    ArgumentMetadata(argAnnotation.name(), argAnnotation.help(), required)
   }
 
   def moduleMetadata(module: Any): ModuleMetadata = {

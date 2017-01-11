@@ -12,7 +12,9 @@ object main {
   val ROOT_DIR = "/home/zinjvi/projects/GS/CLI/insightedge/cli/src/main/resources"
 
   def main(command: Array[String]): Unit = {
-//    val command = Array("grid-gsaStopXXX", "--gsaId=myGsaId-123123213")
+//    val command = Array("grid-gsaStop", "--gsaId=myGsaId-123123213")
+//    val command = Array("grid-gsaStop2", "--gsaId=myGsaId-123123213")
+//    val command = Array("grid-test", "--args=sd")
     val commandData = parser.parse(command)
     val module = getModule(commandData.module)
     val moduleMetadata = metadataGenerator.moduleMetadata(module)

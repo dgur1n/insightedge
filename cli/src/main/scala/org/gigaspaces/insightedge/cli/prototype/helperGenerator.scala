@@ -8,10 +8,16 @@ import org.gigaspaces.insightedge.cli.grid
 object helperGenerator {
 
   def generate(commandMetadata: CommandMetadata) = {
-    println(s"${commandMetadata.name} - ${commandMetadata.help}")
+    println(
+      s"""
+         |  Command "${commandMetadata.name}" - ${commandMetadata.help}
+         |
+         |  Options:
+       """.stripMargin)
 
     commandMetadata.arguments.foreach{ arg =>
-      println(s"${arg.name} - ${arg.help}")
+      val argRequired = if(arg.required) "required" else "not-required"
+      println(s"  --${arg.name} ${" "*(20-arg.name.length)} [$argRequired] ${" "*(20-argRequired.length)}  ${arg.help}")
     }
   }
 

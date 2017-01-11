@@ -24,9 +24,9 @@ object grid {
 //    s"$IE_HOME/sbin/undeploy-datagrid.sh $args" !
 //  }
 //
-  def deploySpace(lusId: Int, args: String): Unit = {
-    s"$IE_HOME/sbin/deploy-datagrid.sh $args" !
-  }
+//  def deploySpace(lusId: Int, args: String): Unit = {
+//    s"$IE_HOME/sbin/deploy-datagrid.sh $args" !
+//  }
 
   @Command(help = "it stops GSA. It is used for......")
   def gsaStop(@Arg(name = "gsaId", help = "Gsa id is used for....")
@@ -34,7 +34,31 @@ object grid {
     println(s"stop gsa id: $gsaId")
   }
 
-//  def lusStart(gsaId: Int, lusId: String)
+//  @Command(help = "starts Spark master on specified host. If host is not specified deploys to localhost")
+//  def sparkStartMaster(//@Arg(name = "host", help = "host to start master")
+//                       //host: Option[String] = None,
+//                       @Arg(name = "args", help = "arguments to start master")
+//                       args: String): Unit = {
+//    println(s"starts Spark Master: host=host, args=$args")
+//  }
+
+  @Command(help = "it stops GSA. It is used for......")
+  def gsaStop2(@Arg(name = "gsaId", help = "Gsa id is used for....")
+              gsaId: String): Unit = {
+    println(s"stop gsa id: $gsaId")
+  }
+
+//  @Command(help = "starts Spark master on specified host. If host is not specified deploys to localhost")
+//  def test(//@Arg(name = "host", help = "host to start master")
+//                       //host: Option[String] = None,
+//                       @Arg(name = "args", help = "arguments to start master")
+//                       args: String): Unit = {
+//    println(s"starts Spark Master: host=host, args=$args")
+//  }
+
+
+
+  //  def lusStart(gsaId: Int, lusId: String)
 //
 //  def lusStop(gsaId: String, lusId: String)
 //

@@ -15,9 +15,11 @@ if [ "$#" -gt 0 ]; then
         echo "run code $@"
         scala -cp $CLI_HOME/target/cli-1.1.0-SNAPSHOT.jar -i $CLI_HOME/src/main/resources/importGrid.scala -e "$@"
     else
+        echo "run command $@"
         scala -cp $CLI_HOME/target/cli-1.1.0-SNAPSHOT.jar org.gigaspaces.insightedge.cli.prototype.main "$@"
     fi
 else
     scala -cp $CLI_HOME/target/cli-1.1.0-SNAPSHOT.jar -i ./importGrid.scala
 fi
 
+# scala -cp /home/zinjvi/projects/GS/CLI/insightedge/cli/target/cli-1.1.0-SNAPSHOT.jar -i /home/zinjvi/projects/GS/CLI/insightedge/cli/src/main/resources/importGrid.scala -e "grid.gsaStop(gsaId=\"myGsaId-123123213\")"

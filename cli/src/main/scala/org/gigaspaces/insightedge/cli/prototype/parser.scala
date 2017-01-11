@@ -13,12 +13,14 @@ object parser {
 
     val argStrings = command.tail
 
-    val args = argStrings.map{ arg =>
-      val splitted = arg.split("=")
-      val name = splitted(0).substring(2)
-      val value = splitted(1)
-      ArgumentData(name, value)
-    }.toList
+    val args = argStrings
+      .filter(_.contains("="))
+      .map { arg =>
+        val splitted = arg.split("=")
+        val name = splitted(0).substring(2)
+        val value = splitted(1)
+        ArgumentData(name, value)
+      }.toList
 
     CommandData(module, commandName, args)
   }
