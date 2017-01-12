@@ -1,4 +1,4 @@
-package org.gigaspaces.insightedge.cli.prototype;
+package org.gigaspaces.insightedge.cli.prototype.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

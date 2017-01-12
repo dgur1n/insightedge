@@ -5,24 +5,38 @@ package org.gigaspaces.insightedge.cli.prototype
   */
 object parser {
 
-  def parse(command: Array[String]): CommandData = {
-    val moduleCommand = command(0).split("-")
+  val commandDelimiter = "-"
+  val argDelimiter = "="
 
-    val module = moduleCommand(0)
-    val commandName = moduleCommand(1)
+//  def parse(commandModule: String): CommandData = {
+//    if (!commandModule.contains(commandDelimiter)) CommandData(commandModule)
+//    else {
+//      val Array(module, commandName) = commandModule.split(commandDelimiter)
+//      CommandData(module, Some(commandName))
+//    }
+//  }
+
+  def parse(command: Array[String]): CommandData = {
+    if (command.isEmpty) return CommandData()
+
+    val commandModule = command.head
+    val data = if (!commandModule.contains(commandDelimiter)) CommandData(Some(commandModule))
+    else {
+      val Array(module, commandName) = commandModule.split(commandDelimiter)
+      CommandData(Some(module), Some(commandName))
+    }
 
     val argStrings = command.tail
 
     val args = argStrings
-      .filter(_.contains("="))
+      .filter(_.contains(argDelimiter))
       .map { arg =>
-        val splitted = arg.split("=")
-        val name = splitted(0).substring(2)
-        val value = splitted(1)
+        val Array(nameFlug, value)= arg.split(argDelimiter)
+        val name = nameFlug.substring(2)
         ArgumentData(name, value)
       }.toList
 
-    CommandData(module, commandName, args)
+    if(args.nonEmpty) data.copy(args = args) else data
   }
 
 }

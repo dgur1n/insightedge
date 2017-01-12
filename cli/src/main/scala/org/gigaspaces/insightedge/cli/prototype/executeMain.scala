@@ -1,41 +1,36 @@
 package org.gigaspaces.insightedge.cli.prototype
 
-import org.gigaspaces.insightedge.cli.grid
-
 import sys.process._
 
 /**
   * @author Vitaliy_Zinchenko
   */
-object main {
+object executeMain {
 
   val ROOT_DIR = "/home/zinjvi/projects/GS/CLI/insightedge/cli/src/main/resources"
 
   def main(command: Array[String]): Unit = {
+
 //    val command = Array("grid-gsaStop", "--gsaId=myGsaId-123123213")
 //    val command = Array("grid-gsaStop2", "--gsaId=myGsaId-123123213")
 //    val command = Array("grid-test", "--args=sd")
     val commandData = parser.parse(command)
-    val module = getModule(commandData.module)
+    val module = moduleRegistry.getModule(commandData.module.get)
     val moduleMetadata = metadataGenerator.moduleMetadata(module)
-    if(!validator.isValidCommandName(commandData.command, moduleMetadata)) {
+    if(!validator.isValidCommandName(commandData.command.get, moduleMetadata)) {
       println(s"wrong command: ${commandData.command}")
-      helperGenerator.generate(moduleMetadata)
+//      helpPrinter.generateCommandHelp(moduleMetadata)
       return
     }
 
-    val metadata = metadataGenerator.commandMetadata(module, commandData.command)
+    val metadata = metadataGenerator.commandMetadata(module, commandData.command.get)
     if(!validator.isValidate(commandData, metadata)) {
-      helperGenerator.generate(metadata)
+//      helpPrinter.generate(metadata)
       return
     }
-    val code = commandToCodeConverter.convert(commandData)
+    val code = commandToCodeConverter.convert(commandData, metadata)
     println(s"code >>> $code")
     run(code)
-  }
-
-  def getModule(module: String): Any = module match {
-    case "grid" => grid
   }
 
   def run(code: String) = {
