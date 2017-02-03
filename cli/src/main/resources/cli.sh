@@ -40,21 +40,31 @@ parse_options() {
 execute() {
 
     if [ $IS_HELP ]; then
-        scala -cp $CLI_JAR $HELP_MAIN $COMMAND
-        exit
+        run_non_interactive_help
+    elif [ -z "$COMMAND" ]; then
+        run_interactive_mode
+    elif [ ! -z "$RUN_CODE" ]; then
+        run_non_interactive_scala_code
+    else
+        run_non_interactive_command
     fi
 
-    if [ -z $COMMAND ]; then
-        scala -cp $CLI_JAR -i $MODULES
-        exit
-    fi
+}
 
-    if [ ! -z $RUN_CODE ]; then
-        scala -cp $CLI_JAR -i $MODULES -e "$COMMAND"
-        exit
-    fi
+run_non_interactive_help() {
+    scala -cp $CLI_JAR $HELP_MAIN $COMMAND
+}
 
-    scala -cp $CLI_JAR org.gigaspaces.insightedge.cli.prototype.main "$@"
+run_interactive_mode() {
+    scala -cp $CLI_JAR -i $MODULES
+}
+
+run_non_interactive_scala_code() {
+    scala -cp $CLI_JAR -i $MODULES -e "$COMMAND"
+}
+
+run_non_interactive_command() {
+    scala -cp $CLI_JAR $CLI_MAIN $COMMAND
 }
 
 main "$@"

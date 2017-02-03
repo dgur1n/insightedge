@@ -9,7 +9,7 @@ object commandToCodeConverter {
       val argMetadata = commandMetadata.arguments.find(_.name == arg.name).get
       s"${arg.name}=${getValue(arg, argMetadata)}"
     }
-    s"${commandData.module}.${commandData.command}(${args.mkString(",")})"
+    s"${commandData.module.get}.${commandData.command.get}(${args.mkString(",")})"
   }
 
   private def getValue(argData: ArgumentData, argMetadata: ArgumentMetadata): String = {

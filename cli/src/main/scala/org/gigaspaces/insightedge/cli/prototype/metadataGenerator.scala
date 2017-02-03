@@ -25,6 +25,7 @@ object metadataGenerator {
     val args = method.getParameters
       .map(toArgumentMetadata)
       .toList
+      .sortBy(_.name)
 
     CommandMetadata(command, methodHelp, args)
   }
@@ -43,7 +44,7 @@ object metadataGenerator {
     val methods = module.getClass.getMethods.filter{ method =>
       method.getAnnotations.exists{ annotation => annotation.annotationType() == classOf[Command]}
     }.map(_.getName)
-      .toList
+      .toList.sorted
 
     ModuleMetadata(methods, help)
   }

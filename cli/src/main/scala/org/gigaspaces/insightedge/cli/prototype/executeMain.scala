@@ -1,5 +1,7 @@
 package org.gigaspaces.insightedge.cli.prototype
 
+import org.gigaspaces.insightedge.cli.grid
+
 import sys.process._
 
 /**
@@ -11,14 +13,12 @@ object executeMain {
 
   def main(command: Array[String]): Unit = {
 
-//    val command = Array("grid-gsaStop", "--gsaId=myGsaId-123123213")
-//    val command = Array("grid-gsaStop2", "--gsaId=myGsaId-123123213")
-//    val command = Array("grid-test", "--args=sd")
-    val commandData = parser.parse(command)
+    moduleRegistry.register("grid", grid) // TODO - temporary registration
+
+    val commandData = parser.parse(command).get
     val module = moduleRegistry.getModule(commandData.module.get)
     val moduleMetadata = metadataGenerator.moduleMetadata(module)
     if(!validator.isValidCommandName(commandData.command.get, moduleMetadata)) {
-      println(s"wrong command: ${commandData.command}")
 //      helpPrinter.generateCommandHelp(moduleMetadata)
       return
     }

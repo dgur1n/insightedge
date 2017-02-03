@@ -9,16 +9,16 @@ import scala.sys.process._
   */
 object helpMain extends App {
 
-  moduleRegistry.register("grid", grid)
+  moduleRegistry.register("grid", grid) // TODO - temporary registration
 
-  val commandData = parser.parse(args)
-
-  if (commandData.module.isEmpty) cliLevelHelp()
-  else if (commandData.command.isEmpty) moduleLevelHelp(commandData.module.get)
-  else commandLevelHelp(commandData.module.get, commandData.command.get)
+  parser.parse(args) match {
+    case None => cliLevelHelp()
+    case Some(CommandData(Some(module), None, _)) => moduleLevelHelp(module)
+    case Some(CommandData(Some(module), Some(command), _)) => commandLevelHelp(module, command)
+  }
 
   def help(): Unit = {
-
+    cliLevelHelp()
   }
 
   private def cliLevelHelp() = {

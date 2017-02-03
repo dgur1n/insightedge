@@ -8,27 +8,12 @@ object parser {
   val commandDelimiter = "-"
   val argDelimiter = "="
 
-//  def parse(commandModule: String): CommandData = {
-//    if (!commandModule.contains(commandDelimiter)) CommandData(commandModule)
-//    else {
-//      val Array(module, commandName) = commandModule.split(commandDelimiter)
-//      CommandData(module, Some(commandName))
-//    }
-//  }
-
-  def parse(command: Array[String]): CommandData = {
-    if (command.isEmpty) return CommandData()
+  def parse(command: Array[String]): Option[CommandData] = {
+    if (command.isEmpty) return None
 
     val commandModule = command.head
-    val data = if (!commandModule.contains(commandDelimiter)) CommandData(Some(commandModule))
-    else {
-      val Array(module, commandName) = commandModule.split(commandDelimiter)
-      CommandData(Some(module), Some(commandName))
-    }
 
-    val argStrings = command.tail
-
-    val args = argStrings
+    val args = command.tail
       .filter(_.contains(argDelimiter))
       .map { arg =>
         val Array(nameFlug, value)= arg.split(argDelimiter)
@@ -36,7 +21,12 @@ object parser {
         ArgumentData(name, value)
       }.toList
 
-    if(args.nonEmpty) data.copy(args = args) else data
+    if (commandModule.contains(commandDelimiter)) {
+      val Array(module, commandName) = commandModule.split(commandDelimiter)
+      Some(CommandData(Some(module), Some(commandName), args))
+    } else {
+      Some(CommandData(Some(commandModule), None, args))
+    }
   }
 
 }
