@@ -12,6 +12,7 @@ import sys.process._
 object grid extends BaseModule {
 
   private val IE_HOME = "/home/dgurin/programs/gigaspaces-insightedge-1.0.0-premium"
+//  private val IE_HOME = "/home/zinjvi/app/gigaspaces-insightedge-1.0.0-premium"
 
   override def name(): String = "grid" //TODO - is duplicated
 
@@ -95,6 +96,16 @@ object grid extends BaseModule {
   }
 
   //Insight Edge commands
+  @Command(help = "Starts InsightEdge in demo mode")
+  def startDemoMode(): Unit = {
+    s"$IE_HOME/sbin/insightedge.sh --mode demo" !
+  }
+
+  @Command(help = "Shuts down InsightEdge demo mode")
+  def shutdownDemoMode(): Unit = {
+    s"$IE_HOME/sbin/insightedge.sh --mode shutdown" !
+  }
+
   @Command(help = "Starts Spark master on specified host. If host is not specified deploys to localhost")
   def sparkStartMaster(@Arg(name = "host", help = "host to start master")
                        host: Option[String] = None,
