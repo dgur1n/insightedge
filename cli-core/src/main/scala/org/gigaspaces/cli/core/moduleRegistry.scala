@@ -1,4 +1,6 @@
-package org.gigaspaces.core
+package org.gigaspaces.cli.core
+
+import org.gigaspaces.cli.core.annotations.{Arg, Command, Module}
 
 import scala.collection.mutable
 

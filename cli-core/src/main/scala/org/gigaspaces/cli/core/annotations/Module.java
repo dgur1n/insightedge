@@ -1,4 +1,4 @@
-package org.gigaspaces.core.annotations;
+package org.gigaspaces.cli.core.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 
-
-# 1) ./cli.sh grid-gsaStop --gsaId=myGsaId-123123213
-# 2) ./cli.sh -c "grid.gsaStop(gsaId = \"myGsaId-123123213\")"
-# 3) ./cli.sh
-
-CLI_HOME=/home/zinjvi/projects/GS/CLI/insightedge/cli
-CLI_JAR=$CLI_HOME/target/cli-1.1.0-SNAPSHOT.jar
+ROOT=/home/zinjvi/projects/GS/CLI/insightedge
+CLI_HOME=$ROOT/insightedge-cli
+CLI_JAR=$CLI_HOME/target/insightedge-cli-1.1.0-SNAPSHOT.jar:$ROOT/cli-core/target/cli-core-1.1.0-SNAPSHOT.jar:$ROOT/xap-cli/target/xap-cli-1.1.0-SNAPSHOT.jar
 CLI_MAIN=org.gigaspaces.insightedge.cli.prototype.executeMain
 HELP_MAIN=org.gigaspaces.insightedge.cli.prototype.helpMain
 MODULES=$CLI_HOME/src/main/resources/modules.scala

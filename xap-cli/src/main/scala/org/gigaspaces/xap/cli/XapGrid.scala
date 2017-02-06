@@ -1,4 +1,4 @@
-package org.gigaspaces.cli
+package org.gigaspaces.xap.cli
 
 import org.gigaspaces.cli.core.BaseModule
 import org.gigaspaces.cli.core.annotations.{Arg, Command, Module}

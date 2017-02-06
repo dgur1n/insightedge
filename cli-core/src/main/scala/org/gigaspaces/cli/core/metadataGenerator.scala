@@ -1,6 +1,8 @@
-package org.gigaspaces.core
+package org.gigaspaces.cli.core
 
 import java.lang.reflect.Parameter
+
+import org.gigaspaces.cli.core.annotations.{Arg, Command, Module}
 
 //import org.gigaspaces.insightedge.cli.grid
 

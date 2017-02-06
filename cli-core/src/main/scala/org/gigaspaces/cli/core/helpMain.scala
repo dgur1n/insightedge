@@ -1,4 +1,4 @@
-package org.gigaspaces.core
+package org.gigaspaces.cli.core
 
 //import org.gigaspaces.insightedge.cli.grid
 

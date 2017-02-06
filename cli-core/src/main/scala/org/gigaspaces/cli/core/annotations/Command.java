@@ -1,4 +1,4 @@
-package org.gigaspaces.core.annotations;
+package org.gigaspaces.cli.core.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Arg {
-    String name();
+public @interface Command {
     String help();
 }
