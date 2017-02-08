@@ -9,7 +9,7 @@
     <description>InsightEdge Package</description>
 
     <properties>
-        <xap.version>12.1.0-m9-16708-358</xap.version>
+        <xap.version>12.1.0-SNAPSHOT</xap.version>
         <spark.version>1.6.0</spark.version>
         <scala.version>2.10.4</scala.version>
         <scalatest.version>2.2.4</scalatest.version>
@@ -34,6 +34,7 @@
         <module>insightedge-core</module>
         <module>insightedge-scala</module>
         <module>insightedge-packager</module>
+        <module>insightedge-cli</module>
         <module>insightedge-integration-tests</module>
     </modules>
 
@@ -67,6 +68,16 @@
             <dependency>
                 <groupId>org.gigaspaces</groupId>
                 <artifactId>xap-spatial</artifactId>
+                <version>${xap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gigaspaces</groupId>
+                <artifactId>unified-cli-core</artifactId>
+                <version>${xap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gigaspaces</groupId>
+                <artifactId>unified-xap-cli</artifactId>
                 <version>${xap.version}</version>
             </dependency>
             <!-- Scala -->

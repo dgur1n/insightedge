@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
-ROOT=/home/zinjvi/projects/GS/CLI/insightedge
-CLI_HOME=$ROOT/insightedge-cli
-CLI_JAR=$CLI_HOME/target/insightedge-cli-1.1.0-SNAPSHOT.jar:$ROOT/cli-core/target/cli-core-1.1.0-SNAPSHOT.jar:$ROOT/xap-cli/target/xap-cli-1.1.0-SNAPSHOT.jar
+if [ -z "${INSIGHTEDGE_HOME}" ]; then
+  export INSIGHTEDGE_HOME="$(cd "`dirname "$0"`"/..; pwd)"
+fi
+
+. ${INSIGHTEDGE_HOME}/sbin/common-insightedge.sh
+
+MODULES=$CLI_HOME/src/main/resources/modules.scala
+
 CLI_MAIN=org.gigaspaces.insightedge.cli.prototype.executeMain
 HELP_MAIN=org.gigaspaces.insightedge.cli.prototype.helpMain
-MODULES=$CLI_HOME/src/main/resources/modules.scala
+
+MODULES="$INSIGHTEDGE_HOME/conf/cli-config.scala"
+
+CLI_JARS="$(find $INSIGHTEDGE_HOME/lib -name "insightedge-cli-*.jar"):$INSIGHTEDGE_HOME/datagrid/lib/platform/unified-cli/*"
 
 main() {
     parse_options "$@"
@@ -48,19 +56,21 @@ execute() {
 }
 
 run_non_interactive_help() {
-    scala -cp $CLI_JAR $HELP_MAIN $COMMAND
+    scala -cp $CLI_JARS $HELP_MAIN $COMMAND
 }
 
 run_interactive_mode() {
-    scala -cp $CLI_JAR -i $MODULES
+    scala -cp $CLI_JARS -i $MODULES
 }
 
 run_non_interactive_scala_code() {
-    scala -cp $CLI_JAR -i $MODULES -e "$COMMAND"
+    scala -cp $CLI_JARS -i $MODULES -e "$COMMAND"
 }
 
 run_non_interactive_command() {
-    scala -cp $CLI_JAR $CLI_MAIN $COMMAND
+    scala -cp $CLI_JARS $CLI_MAIN $COMMAND
 }
+
+
 
 main "$@"

@@ -20,7 +20,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-import org.apache.commons.io.filefilter.TrueFileFilter
+import org.apache.commons.io.filefilter.{AbstractFileFilter, TrueFileFilter}
 import org.insightedge.spark.packager.Utils._
 
 /**
@@ -76,8 +76,8 @@ object Launcher {
     }
 
     run("Adding integration libs") {
-      copy(s"$project/insightedge-core/target", s"$output/lib", nameFilter(n => n.startsWith("insightedge-core") && !n.contains("test") && !n.contains("sources") && !n.contains("javadoc")))
-      copy(s"$project/insightedge-scala/target", s"$output/lib", nameFilter(n => n.startsWith("insightedge-scala") && !n.contains("test") && !n.contains("sources") && !n.contains("javadoc")))
+      copy(s"$project/insightedge-core/target", s"$output/lib", binJarFilter("insightedge-core"))
+      copy(s"$project/insightedge-scala/target", s"$output/lib", binJarFilter("insightedge-scala"))
     }
 
     run("Adding poms of integration libs") {
@@ -87,7 +87,7 @@ object Launcher {
     }
 
     run("Adding integration scripts") {
-      copy(s"$resources/bin", s"$output/bin")
+      copy(s"$resources/bin/common/", s"$output/bin")
       copy(s"$resources/sbin/common/", s"$output/sbin/")
       copy(s"$resources/sbin/$edition/", s"$output/sbin/")
     }
@@ -112,14 +112,6 @@ object Launcher {
       remove(s"$output/datagrid/tools/groovy")
       remove(s"$output/datagrid/tools/scala")
       remove(s"$output/datagrid/tools/xap-font.json")
-    }
-    if (edition.equals("community")) {
-      run("Adding template space configuration (community only)") {
-        copy(s"$resources/sbin/community/template/insightedge-datagrid.xml", s"$output/datagrid/deploy/templates/insightedge-datagrid/META-INF/spring/pu.xml")
-      }
-      run("Adding geospatial jars to pu-common (community only)") {
-        copy(s"$output/datagrid/lib/optional/spatial", s"$output/datagrid/lib/optional/pu-common")
-      }
     }
 
     run("Unpacking Zeppelin") {
@@ -148,6 +140,27 @@ object Launcher {
 
     run("Removing Hadoop examples") {
       remove(s"$output/lib/spark-examples-1.6.0-hadoop2.6.0.jar")
+    }
+
+    if("premium" == edition) {
+      run("Adding premium config") {
+        copy(s"$resources/conf/premium/", s"$output/conf")
+      }
+      run("Adding CLI jar") {
+        copy(s"$project/insightedge-cli/target", s"$output/lib", binJarFilter("insightedge-cli"))
+      }
+      run("Adding CLI sh") {
+        copy(s"$resources/bin/premium/", s"$output/bin")
+      }
+    }
+
+    if("community" == edition) {
+      run("Adding template space configuration (community only)") {
+        copy(s"$resources/sbin/community/template/insightedge-datagrid.xml", s"$output/datagrid/deploy/templates/insightedge-datagrid/META-INF/spring/pu.xml")
+      }
+      run("Adding geospatial jars to pu-common (community only)") {
+        copy(s"$output/datagrid/lib/optional/spatial", s"$output/datagrid/lib/optional/pu-common")
+      }
     }
 
     run("Making scripts executable") {
@@ -181,6 +194,10 @@ object Launcher {
     val start = System.currentTimeMillis()
     block
     println("\tdone in " + (System.currentTimeMillis() - start) + " ms")
+  }
+
+  def binJarFilter(jarName: String): AbstractFileFilter = {
+    nameFilter(n => n.startsWith(jarName) && !n.contains("test") && !n.contains("sources") && !n.contains("javadoc"))
   }
 
 }
