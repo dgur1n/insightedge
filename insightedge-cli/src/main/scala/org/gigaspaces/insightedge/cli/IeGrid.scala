@@ -1,5 +1,6 @@
 package org.gigaspaces.insightedge.cli
 
+import org.gigaspaces.cli.core.CliModule
 import org.gigaspaces.cli.core.annotations.{Arg, Command, Module}
 import org.gigaspaces.xap.cli.XapGrid
 
@@ -8,8 +9,10 @@ import sys.process._
 /**
   * @author Vitaliy_Zinchenko
   */
-@Module(help = "Main module to operate with datagrid.")
-class IeGrid extends XapGrid {
+@Module(help = "Main module to operate with datagrid.", priority = 1)
+class IeGrid extends CliModule {
+
+  override def name(): String = "grid"
 
 //  private val IE_HOME = "/home/dgurin/programs/gigaspaces-insightedge-1.0.0-premium"
   private val IE_HOME = "/home/zinjvi/app/gigaspaces-insightedge-1.0.0-premium"
@@ -58,8 +61,6 @@ class IeGrid extends XapGrid {
                    host: Option[String]): Unit = {
     println(s"zeppelinStop: host=$host")
   }
-
-
 
 }
 
