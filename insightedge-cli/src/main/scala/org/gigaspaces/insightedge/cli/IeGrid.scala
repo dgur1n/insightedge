@@ -10,7 +10,7 @@ import sys.process._
   * @author Vitaliy_Zinchenko
   */
 @Module(help = "Main module to operate with datagrid.", priority = 1)
-class IeGrid extends CliModule {
+class IeGrid extends XapGrid with CliModule {
 
   override def name(): String = "grid"
 
